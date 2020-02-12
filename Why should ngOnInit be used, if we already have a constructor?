@@ -1,0 +1,33 @@
+Angular provides life cycle hook ngOnInit by default.
+
+Why should ngOnInit be used, if we already have a constructor?
+
+Answer:
+
+Constructor is predefined default method of the typescript class. There is no relation between Angular and constructor. Normally we use constructor to define/initialize some variables, but when we have tasks related to Angular's bindings we move to Angular's ngOnInit life cycle hook. ngOnInit is called just after the constructor call. We can also do the same work in the constructor but its preferable to use ngOnInit to start Angular's binding.
+
+-----------------------------
+The Constructor is a default method of the class that is executed when the class is instantiated and ensures proper initialisation of fields in the class and its subclasses. Angular, or better Dependency Injector (DI), analyses the constructor parameters and when it creates a new instance by calling new MyClass() it tries to find providers that match the types of the constructor parameters, resolves them and passes them to the constructor like
+
+new MyClass(someArg);
+ngOnInit is a life cycle hook called by Angular to indicate that Angular is done creating the component.
+
+We have to import OnInit like this in order to use it (actually implementing OnInit is not mandatory but considered good practice):
+
+import { Component, OnInit } from '@angular/core';
+then to use make us of the method OnInit, we have to implement the class like this:
+
+export class App implements OnInit {
+  constructor() {
+     // Called first time before the ngOnInit()
+  }
+
+  ngOnInit() {
+     // Called after the constructor and called  after the first ngOnChanges() 
+  }
+}
+Implement this interface to execute custom initialization logic after your directive's data-bound properties have been initialized. ngOnInit is called right after the directive's data-bound properties have been checked for the first time, and before any of its children have been checked. It is invoked only once when the directive is instantiated.
+
+Mostly we use ngOnInit for all the initialization/declaration and avoid stuff to work in the constructor. The constructor should only be used to initialize class members but shouldn't do actual "work".
+
+So you should use constructor() to setup Dependency Injection and not much else. ngOnInit() is better place to "start" - it's where/when components' bindings are resolved.
